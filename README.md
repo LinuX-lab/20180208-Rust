@@ -21,6 +21,10 @@ zobaczyło te narzędzia.
 Tu są ciekawe polecenia komendy `rustup` (sama komenda ma rozbudowany
 system pomocy aktywowany przez `--help`):
 
+### `rustup update`
+Aktalizuje wszystkie zainstalowane komponenty, kompilatory i narzędzia do najnowszej
+wersji.
+
 ### `rustup toolchain list`
 Wyświetla zainstalowane wersje kompilatora i bibliotek. W użyciu są trzy
 podstawowe kanały: `stable`, `beta` i `nightly`.
@@ -74,5 +78,8 @@ niektóre narzędzia i pakiety.
 * `rustfmt` - drugi must-have, narzędzie do autoformatowania kodu źródłowego.
 * `rls` - *rust language server*, narzędzie do introspekcji kodu używane przez
 niektóre IDE, jak *VSCode*, *vim* czy *emacs*.
-* `clippy` - liner kodu, też wykorzystywany przez IDE
+* `clippy` - linter kodu, też wykorzystywany przez IDE
 
+**Uwaga**, komponenty `rustfmt`, `rls` i `clippy` są ostatnio często niedostępne w
+kanale `nightly`, przez co blokują poprawne działanie `rustup update`. A szkoda, bo
+`rustfmt-nightly` ma przekozackie możliwości.
