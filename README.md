@@ -3,7 +3,7 @@
 Rust jest dostępny w pakietach w niektórych dystrybucjach, jednak często
 jest to wersja (mocno) nieaktualna - a jak już, to wyłącznie z gałęzi
 *stable*. Na przykład *rust* spaczkowany w *Ubuntu Cosmic* jest w wersji
-1.30, gdy obecne *stable* to 1.33.  
+1.30, gdy obecne *stable* to 1.33. Wyjątkiem jest `FreeBSD`, gdzie w pakietach jest i aktualny `stable` i aktualny `nightly`. 
 
 Polecaną metodą instalacji jest aplikacja
 [rustup](https://rustup.rs/)

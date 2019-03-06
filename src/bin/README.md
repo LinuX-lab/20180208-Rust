@@ -12,7 +12,8 @@ Aby uruchomić to w wersji *release* (z pełnymi optymalizacjami), dodać trzeba
 > cargo run --release --bin 01_hello
 ```
 
-Jeżeli w katalogu `/src/bin` jest tylko jeden plik źródłowy, można
+Jeżeli pakiet generuje tylko jedną aplikację binarną (w katalogu `/src/bin` jest tylko jeden plik źródłowy, albo w ogóle
+nie ma katalogu `/src/bin` a aplikacja jest w pliku `/src/main.rs`), można
 opuścić selektor `--bin NAZWA`.
 
 ## Uruchomienie testów
