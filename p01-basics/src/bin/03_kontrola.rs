@@ -1,12 +1,12 @@
 // Struktury kontrolne
 
-use core::borrow::Borrow;
-
+#[allow(dead_code)]
 fn dubluj1(i: u32) -> u32 {
     // Model według C/C++, słowo kluczowe return
     return i * 2;
 }
 
+#[allow(dead_code)]
 fn dubluj2(i: u32) -> u32 {
     // Model zalecany w Rust, typowy dla języków funkcyjnych
     // Funkcja zwraca ostatnie wyrażenie w niej wyliczone

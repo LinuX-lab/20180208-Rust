@@ -1,0 +1,11 @@
+{
+	"folders": [
+		{
+			"path": "p01-basics"
+		},
+		{
+			"path": "p02-wasm"
+		}
+	],
+	"settings": {}
+}
