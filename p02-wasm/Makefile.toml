@@ -3,8 +3,9 @@ install_crate = "wasm-bindgen"
 command = "wasm-pack"
 args = ["build", "--target", "web"]
 
+
 [tasks.run]
-command = "python3"
-args = ["-m", "http.server"]
+command = "cargo"
+args = ["run", "--release","--bin","webserwer"]
 dependencies = ["build"]
 
