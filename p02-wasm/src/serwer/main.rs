@@ -1,64 +1,107 @@
-use std::path::Path;
 use iron::prelude::*;
-use iron::{Iron,AroundMiddleware, Handler};
+use iron::{AfterMiddleware, Iron};
 use mount::Mount;
 use staticfile::Static;
+use std::path::Path;
+
+const URL: &str = "0.0.0.0:3000";
+const FORMAT_CZAS: &str = "%Y-%m-%d %H:%M:%S";
 
 struct Logger {}
-
-struct LoggerHandler<H: Handler> {
-    logger: Logger,
-    handler: H,
-}
 
 impl Logger {
     fn new() -> Logger {
         Logger {}
     }
 
-    fn log(&self, req: &Request, res: Result<&Response, &IronError>, time: u64) {
+    fn time_stamp(&self) -> String {
+        let now = time::now();
+        now.strftime(FORMAT_CZAS).unwrap().to_string()
+    }
+}
+
+// Implementujemy metody wymagane przez interfejs AfterMiddleware
+impl AfterMiddleware for Logger {
+    // Obsługa potoku zakończonego sukcesem
+    fn after(&self, req: &mut Request, res: Response) -> Result<Response, IronError> {
+        // Wypisujemy linijkę logu na konsolę
+
         println!(
-            "{} {} {:?} {}us",
+            "{} OK {} {} {}",
+            self.time_stamp(),
+            req.remote_addr.to_string(),
             req.method,
             req.url,
-            match res {
-                Ok(x) => x.status.unwrap(),
-                Err(x) => x.response.status.unwrap(),
-            },
-            time
         );
-    }
-}
 
-impl<H: Handler> Handler for LoggerHandler<H> {
-    fn handle(&self, req: &mut Request) -> IronResult<Response> {
-        let entry = ::time::precise_time_ns();
-        let res = self.handler.handle(req);
-        self.logger
-            .log(req, res.as_ref(), ::time::precise_time_ns() - entry);
-        res
+        // Zwracamy zawartość bez zmiany
+        Ok(res)
     }
-}
 
-impl AroundMiddleware for Logger {
-    fn around(self, handler: Box<Handler>) -> Box<Handler> {
-        Box::new(LoggerHandler {
-            logger: self,
-            handler,
-        }) as Box<Handler>
+    // Obsługa potoku zakończonego błędem. Hint: możemy "zjeść" ten błąd i zamienić go na
+    // "sukces" (tj jednak wygenerować jednak jakąś stronę).
+    // Tutaj generujemy stronę z pełniejszym opisem błędu
+    fn catch(&self, req: &mut Request, err: IronError) -> Result<Response, IronError> {
+        use iron::mime;
+
+        // Wypisujemy linijkę logu na konsolę
+        println!(
+            "{} ERR {} {} {} {:?}",
+            self.time_stamp(),
+            req.remote_addr.to_string(),
+            req.method,
+            req.url,
+            err.response.status.unwrap()
+        );
+
+        // Typ zwracanego dokumentu (bez tego to surowy tekst)
+        let content_type = "text/html; charset=UTF-8".parse::<mime::Mime>().unwrap();
+
+        // Konstruujemy ciało. r"..." to "surowy" string, można go łamać między liniami
+        let body = format!(
+            r"<html>
+<head><title>Error: {error}</title></head>
+<body>
+<h1>Error</h1>
+<strong>{error}</strong> in <tt>{method} {url}</tt>
+<h2>Details - request</h2>
+<pre>{request:?}
+</pre>
+<h2>Details - response</h2>
+<pre>{response:?}
+</pre>
+</body>",
+            error = err.response.status.unwrap(),
+            method = req.method,
+            url = req.url,
+            request = req,
+            response = err.response,
+        );
+
+        // Zamiast przekazywać `Err(err)` zamieniamy go na Ok(strona), kopiując jednak oryginalny
+        // status błędu
+
+        let original_status = err.response.status.unwrap();
+
+        Ok(Response::with((content_type, original_status, body)))
     }
 }
 
 fn main() {
+    // Mapowanie URI na handlery
     let mut mount = Mount::new();
 
-    // Serve the shared JS/CSS at /
-    mount.mount(
-        "/",
-        Logger::new().around(Box::new(Static::new(Path::new(".")))),
-    );
+    // Root jest serwowany z bieżącego katalogu
+    mount.mount("/", Static::new(Path::new(".")));
 
-    println!("Server running on http://localhost:3000/");
+    // Tworzenie potoku przetwarzania
+    let mut chain = Chain::new(mount);
 
-    Iron::new(mount).http("127.0.0.1:3000").unwrap();
+    // Dopinanie loggera na samym końcu potoku
+    chain.link_after(Logger::new());
+
+    println!("Server running on {}", URL);
+
+    // Uruchomienie serwera
+    Iron::new(chain).http(URL).unwrap();
 }
