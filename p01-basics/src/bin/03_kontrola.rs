@@ -1,5 +1,8 @@
 // Struktury kontrolne
 
+// Clippy ostrzega, że return można pominąć. Wyłączamy ten warning
+#![allow(clippy::needless_return)]
+
 #[allow(dead_code)]
 fn dubluj1(i: u32) -> u32 {
     // Model według C/C++, słowo kluczowe return
@@ -16,8 +19,8 @@ fn dubluj2(i: u32) -> u32 {
 // `'static` to tzw. `lifetime`, sprawa na następne spotkanie
 // Tu zwracamy stałe stringi istniejące przez cały czas życia programu
 
+#[allow(dead_code)]
 fn ile1(i: u32) -> &'static str {
-
     // To odpowiednik switch/case, tak jak to się robi w C/C++/Go
 
     match i {
@@ -28,8 +31,8 @@ fn ile1(i: u32) -> &'static str {
     };
 }
 
+#[allow(dead_code)]
 fn ile2(i: u32) -> &'static str {
-
     // `match`, tak jak `if` i inne słowa kluczowe jest *wyrażeniem*, tj zwraca wartość.
     // Tutaj wartością jest ostatnie wyrażenie każdej gałęzi.
 
@@ -50,8 +53,8 @@ fn ile2(i: u32) -> &'static str {
     return wynik; // Zwracamy to
 }
 
+#[allow(dead_code)]
 fn ile3(i: u32) -> &'static str {
-
     // Forma klasyczna dla Rust-a
 
     match i {

@@ -7,11 +7,19 @@ pub struct LiczbyPierwszeIter<'a> {
     iteracja: usize,
 }
 
+/// Warto zrobić implementację traita Default, odpowiada on konstruktorowi
+/// domyślnemu z C++
+impl std::default::Default for LiczbyPierwsze {
+    /// Inicjalizuje listę pierwszymi dwiema liczbami pierwszymi
+    fn default() -> Self {
+        Self(vec![2, 3])
+    }
+}
 /// Dodajemy metody do struktury `LiczbyPierwsze`
 impl LiczbyPierwsze {
-    /// Konstruktor, inicjalizuje listę pierwszymi dwiema liczbami pierwszymi
+    /// Konstruktor, używa `dafault()` do inicjalizacji
     pub fn new() -> Self {
-        Self(vec![2, 3])
+        Self::default()
     }
 
     /// Dodaje następną liczbę pierwszą
@@ -60,6 +68,11 @@ impl LiczbyPierwsze {
         self.0.len()
     }
 
+    /// Czy lista jest pusta (dla uspokojenia lintera)
+    pub fn is_empty(&self) -> bool {
+        self.0.len() == 0
+    }
+
     /// Iterator po wszystkich liczbach pierwszych
     pub fn iter(&mut self) -> LiczbyPierwszeIter {
         LiczbyPierwszeIter {
@@ -88,7 +101,6 @@ impl<'a> Iterator for LiczbyPierwszeIter<'a> {
         Some(m)
     }
 }
-
 
 fn main() {
     let mut pierwsze = LiczbyPierwsze::new();

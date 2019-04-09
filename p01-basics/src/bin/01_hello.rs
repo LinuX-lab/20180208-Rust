@@ -7,6 +7,9 @@
 // Funkcje zaczynają się od `fn`, main nie ma argumentów (wyciągamy je biblioteką standardową)
 // i nic nie zwraca. Można wymusić C-owate zachowanie `std::process::exit(liczba)`.
 fn main() {
+    // Więcej o tej linijce na końcu
+    #![allow(clippy::zero_prefixed_literal)]
+
     // Wszystko z `!` na końcu to makro.
     println!("Hello, world!");
 
@@ -35,8 +38,12 @@ fn main() {
 
     // Rust posługuje się przyrostkami do wymuszania bazy, 0b (binarny), 0o (ósemkowy) i
     // 0x(szesnastkowy)
-    println!("1000(2)={}, 1000(8)={}, 1000(16)={}", 0b_10_00, 0o_10_00, 0x_10_00);
+    println!(
+        "1000(2)={}, 1000(8)={}, 1000(16)={}",
+        0b_10_00, 0o_10_00, 0x_10_00
+    );
 
     // Przedrostek 0 nie włącza trybu ósemkowego, jak w C/C++
+    // Clippy ostrzega o tym, dlatego wyłączamy ten warning na początku main()
     println!("010={}", 010);
 }

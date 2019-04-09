@@ -21,13 +21,19 @@ fn gcd(x: u64, y: u64) -> u64 {
 
 impl Ulamek {
     fn new(l: u64, m: u64) -> Self {
-        Ulamek { licznik: l, mianownik: m }.reduce()
+        Ulamek {
+            licznik: l,
+            mianownik: m,
+        }
+        .reduce()
     }
-
 
     fn reduce(&self) -> Ulamek {
         let g = gcd(self.licznik, self.mianownik);
-        Ulamek { licznik: self.licznik / g, mianownik: self.mianownik / g }
+        Ulamek {
+            licznik: self.licznik / g,
+            mianownik: self.mianownik / g,
+        }
     }
 }
 
@@ -35,6 +41,11 @@ impl Add for Ulamek {
     type Output = Self;
 
     fn add(self, rhs: Self) -> Self::Output {
+        // Trochę magii: linter zauważa, że używamy * (mnożenia) w implementacji
+        // traita Add (dodawania) i zgłasza to jako warning
+        //
+        // Poniższa linijka wyłącza to ostrzeżenie
+        #![allow(clippy::suspicious_arithmetic_impl)]
         Ulamek::new(
             self.licznik * rhs.mianownik + rhs.licznik * self.mianownik,
             rhs.mianownik * self.mianownik,
@@ -42,13 +53,11 @@ impl Add for Ulamek {
     }
 }
 
-
 impl Display for Ulamek {
     fn fmt(&self, f: &mut Formatter) -> Result<(), Error> {
         f.write_fmt(format_args!("{}/{}", self.licznik, self.mianownik))
     }
 }
-
 
 fn main() {
     let u1 = Ulamek::new(2, 6);
