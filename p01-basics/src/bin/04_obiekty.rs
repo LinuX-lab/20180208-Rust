@@ -7,11 +7,14 @@ pub struct Osoba {
     wiek: u8,
 }
 
-
 impl Osoba {
     // P.O. konstruktora w Ruście
     fn new(i: &str, n: &str, w: u8) -> Self {
-        Osoba { imie: String::from(i), nazwisko: String::from(n), wiek: w }
+        Osoba {
+            imie: String::from(i),
+            nazwisko: String::from(n),
+            wiek: w,
+        }
     }
 
     fn drukuj(&self) -> String {
@@ -33,9 +36,7 @@ impl std::fmt::Debug for Osoba {
     fn fmt(&self, f: &mut Formatter) -> Result<(), Error> {
         f.write_fmt(format_args!(
             "Osoba(imie:'{}'; nazwisko:'{}'; wiek:{})",
-            self.imie,
-            self.nazwisko,
-            self.wiek
+            self.imie, self.nazwisko, self.wiek
         ))
     }
 }

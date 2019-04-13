@@ -9,13 +9,17 @@ pub struct Osoba {
 impl Osoba {
     // P.O. konstruktora w Ruście
     fn new(i: &str, n: &str, w: u8) -> Self {
-        Osoba { imie: String::from(i), nazwisko: String::from(n), wiek: w }
+        Osoba {
+            imie: String::from(i),
+            nazwisko: String::from(n),
+            wiek: w,
+        }
     }
 }
 
 fn main() {
     let s = Osoba::new("Jan", "Kowalski", 20);
-    
+
     // Użycie widoku debugowania wygenerowanego automatycznie
     println!("{:?}", s);
 }
