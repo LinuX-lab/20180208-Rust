@@ -1,0 +1,6 @@
+[workspace]
+
+members = [
+    "p01-basics",
+    "p02-wasm"
+]
