@@ -35,12 +35,12 @@ impl std::fmt::Display for Liczba {
 
 fn main() {
     // Mut, bo zmieniamy to później. Bez `mut` zachowuje się jak Javove `final`.
-    let mut x = Liczba::newr(1, 3);
+    let  x = Liczba::newr(1, 3);
     println!("Liczba: {}", x);
 
-    x = Liczba::newi(5);
+    let x = Liczba::newi(5);
     println!("Liczba: {}", x);
 
-    x = Liczba::newf(355_f64 / 113_f64);
+    let x = Liczba::newf(355_f64 / 113_f64);
     println!("Liczba: {}", x);
 }
