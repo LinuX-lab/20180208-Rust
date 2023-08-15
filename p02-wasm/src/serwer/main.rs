@@ -5,7 +5,7 @@ use staticfile::Static;
 use std::path::Path;
 
 const URL: &str = "0.0.0.0:3000";
-const FORMAT_CZAS: &str = "%Y-%m-%d %H:%M:%S";
+const FORMAT_CZAS: &str = "[year][month][day] [hour][minute][second]";
 
 struct Logger {}
 
@@ -15,8 +15,9 @@ impl Logger {
     }
 
     fn time_stamp(&self) -> String {
-        let now = time::now();
-        now.strftime(FORMAT_CZAS).unwrap().to_string()
+        let format = time::format_description::parse(FORMAT_CZAS).unwrap();
+        let now = time::OffsetDateTime::now_utc();
+        now.format(&format).unwrap().to_string()
     }
 }
 

@@ -35,7 +35,7 @@ impl std::fmt::Display for Liczba {
 
 fn main() {
     // Mut, bo zmieniamy to później. Bez `mut` zachowuje się jak Javove `final`.
-    let  x = Liczba::newr(1, 3);
+    let x = Liczba::newr(1, 3);
     println!("Liczba: {}", x);
 
     let x = Liczba::newi(5);

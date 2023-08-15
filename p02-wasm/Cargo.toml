@@ -2,7 +2,7 @@
 name = "linuxlab-20190405-wasm"
 version = "1.0.0"
 authors = ["Paweł Kraszewski <pawel@kraszewscy.net>"]
-edition = "2018"
+edition = "2021"
 
 [lib]
 crate-type = ["cdylib", "rlib"]
@@ -18,7 +18,7 @@ staticfile = "^0.5"
 mount = "^0.4"
 router = "^0.6"
 mime = "^0.3"
-time = "^0.1"
+time = { version = "^0.3", features = ["formatting"] }
 
 [dependencies.web-sys]
 version = "^0.3"
